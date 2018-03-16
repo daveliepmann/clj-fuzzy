@@ -1,14 +1,9 @@
-;; -------------------------------------------------------------------
-;; clj-fuzzy Jaro-Winkler Distance
-;; -------------------------------------------------------------------
-;;
-;;
-;;   Author: PLIQUE Guillaume (Yomguithereal)
-;;   Version: 0.1
-;;
-(ns clj-fuzzy.jaro-winkler)
+(ns clj-fuzzy.jaro-winkler
+  "clj-fuzzy Jaro-Winkler Distance
 
-;; Utilities
+   Original author: PLIQUE Guillaume (Yomguithereal)")
+
+;;;; Utilities
 ;; OPTIMIZE: I cannot believe this is the most efficient way to do it
 (defn- longest-sequence [seq1 seq2]
   (if (>= (count seq1) (count seq2))
@@ -69,7 +64,7 @@
         (recur 5 prefix))
       prefix)))
 
-;; Main Functions
+;;;; Main Functions
 (defn jaro
   "Compute the Jaro distance between two sequences."
   [seq1 seq2]
