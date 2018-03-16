@@ -4,12 +4,6 @@
    Original author: PLIQUE Guillaume (Yomguithereal)")
 
 ;;;; Utilities
-;; OPTIMIZE: I cannot believe this is the most efficient way to do it
-(defn- longest-sequence [seq1 seq2]
-  (if (>= (count seq1) (count seq2))
-    [seq1 seq2]
-    [seq2 seq1]))
-
 (defn- match-window [min-len] (max (dec (int (/ min-len 2))) 0))
 
 (defn- submatch [i ch shortest window-start window-end seq1-matches seq2-matches]
@@ -27,7 +21,7 @@
       [nseq1-matches nseq2-matches])))
 
 (defn- matches [seq1 seq2]
-  (let [[longest shortest] (longest-sequence seq1 seq2)
+  (let [[longest shortest] (reverse (sort-by count [seq1 seq2]))
         max-len (count longest)
         min-len (count shortest)
         mwindow (match-window max-len)]
@@ -79,9 +73,9 @@
          3.0))))
 
 (defn jaro-winkler
-  "Compute the Jaro-Winkler distance between two sequences."
-  [seq1 seq2]
-  (let [j (jaro seq1 seq2)
-        l (winkler-prefix seq1 seq2)
-        p 0.1]
-    (+ j (* l p (- 1 j)))))
+  "Compute the Jaro-Winkler distance between two sequences."  
+  ([seq1 seq2] (jaro-winkler seq1 seq2 0.1))
+  ([seq1 seq2 prefix-scale]
+   (let [j (jaro seq1 seq2)
+         l (winkler-prefix seq1 seq2)]
+     (+ j (* l prefix-scale (- 1 j))))))
